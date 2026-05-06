@@ -4,6 +4,12 @@ A small live prototype exploring per-chat scratchpads in Cursor.
 
 This repo is a design-engineering mock intended to make the idea concrete enough to discuss in the Coinbase <> Cursor shared Slack channel. It recreates a Cursor-like chat surface with mock data, then adds a private scratchpad tray attached to the current chat.
 
+## Live Demo
+
+https://cursor-scratchpad-rfc.vercel.app/
+
+![Cursor scratchpad prototype demo](./demo.gif)
+
 ## Idea
 
 When working with an AI chat, I often want a place to keep my own notes: reminders, links, todos, decisions, or follow-ups. Today those notes either live outside the chat or get mixed into prompts.
