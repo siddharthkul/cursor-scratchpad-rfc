@@ -99,7 +99,7 @@ export function ChatWindow() {
           {chatMock.prompt}
         </div>
 
-        <p className="mt-[26px] px-[12px] text-[22px] font-semibold tracking-[-0.02em] text-[#eeeeef]">
+        <p className="mt-[26px] px-[12px] text-[20px] font-semibold tracking-[-0.02em] text-[#eeeeef]">
           {chatMock.assistantReply}
         </p>
       </div>
