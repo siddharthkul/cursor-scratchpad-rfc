@@ -7,6 +7,7 @@ import {
   Search,
   Share,
 } from "lucide-react"
+import { useState } from "react"
 import type { ReactNode } from "react"
 
 import { ChatComposer } from "@/components/chat-composer"
@@ -38,6 +39,8 @@ function ToolbarIcon({
 }
 
 export function ChatWindow() {
+  const [isScratchpadOpen, setIsScratchpadOpen] = useState(false)
+
   return (
     <section
       aria-label="Cursor chat mock"
@@ -101,8 +104,14 @@ export function ChatWindow() {
         </p>
       </div>
 
-      <Scratchpad />
-      <ChatComposer />
+      <Scratchpad
+        isOpen={isScratchpadOpen}
+        setIsOpen={setIsScratchpadOpen}
+      />
+      <ChatComposer
+        isScratchpadOpen={isScratchpadOpen}
+        onOpenScratchpad={() => setIsScratchpadOpen(true)}
+      />
     </section>
   )
 }

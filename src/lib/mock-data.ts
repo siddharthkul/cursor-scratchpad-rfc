@@ -8,6 +8,7 @@ export const chatMock = {
   branchAction: "Create Branch & Commit",
   location: "Local",
   branch: "main",
+  contextUsedPercent: 18,
   scratchpad: {
     title: "Scratchpad",
     description: "Private notes, not sent to AI",

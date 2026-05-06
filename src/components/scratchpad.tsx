@@ -1,4 +1,4 @@
-import { NotebookPen, X } from "lucide-react"
+import { X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import type {
   ChangeEvent,
@@ -11,9 +11,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { chatMock } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 
+const TODO_MARKER_HIT_WIDTH = 22
+
 function formatTodoShortcuts(value: string) {
   return value
-    .replace(/^(\s*)\[ \](?=\s|$)/gm, "$1☐")
+    .replace(/^(\s*)\[(?: )?\](?=\s|$)/gm, "$1☐")
     .replace(/^(\s*)\[x\](?=\s|$)/gim, "$1☑")
 }
 
@@ -33,9 +35,65 @@ function getTodoMarkerPosition(value: string, cursorPosition: number) {
   return lineStart + todoMatch[1].length
 }
 
-export function Scratchpad() {
+function getTodoMarkerPositionFromPoint(
+  textarea: HTMLTextAreaElement,
+  value: string,
+  clientX: number,
+  clientY: number,
+) {
+  const styles = window.getComputedStyle(textarea)
+  const rect = textarea.getBoundingClientRect()
+  const fontSize = Number.parseFloat(styles.fontSize)
+  const lineHeight =
+    Number.parseFloat(styles.lineHeight) || Math.round(fontSize * 1.6)
+  const paddingTop = Number.parseFloat(styles.paddingTop)
+  const paddingLeft = Number.parseFloat(styles.paddingLeft)
+  const relativeY = clientY - rect.top - paddingTop + textarea.scrollTop
+  const lineIndex = Math.floor(relativeY / lineHeight)
+
+  if (lineIndex < 0) {
+    return null
+  }
+
+  const lines = value.split("\n")
+  const currentLine = lines[lineIndex]
+
+  if (currentLine === undefined) {
+    return null
+  }
+
+  const todoMatch = currentLine.match(/^(\s*)([☐☑])\s/)
+
+  if (!todoMatch) {
+    return null
+  }
+
+  const markerOffset = todoMatch[1].length
+  const estimatedCharacterWidth = fontSize * 0.52
+  const markerX = rect.left + paddingLeft + markerOffset * estimatedCharacterWidth
+
+  if (
+    clientX < markerX - 6 ||
+    clientX > markerX + TODO_MARKER_HIT_WIDTH
+  ) {
+    return null
+  }
+
+  return (
+    lines.slice(0, lineIndex).reduce((position, line) => {
+      return position + line.length + 1
+    }, 0) + markerOffset
+  )
+}
+
+type ScratchpadProps = {
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+}
+
+export function Scratchpad({ isOpen, setIsOpen }: ScratchpadProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [isHoveringTodoMarker, setIsHoveringTodoMarker] = useState(false)
   const [note, setNote] = useState(
     "Mention that notes stay attached to this chat and never become prompt context.",
   )
@@ -136,6 +194,12 @@ export function Scratchpad() {
       return false
     }
 
+    toggleTodoAtPosition(markerPosition)
+
+    return true
+  }
+
+  function toggleTodoAtPosition(markerPosition: number) {
     const nextNote =
       note.slice(0, markerPosition) +
       (note[markerPosition] === "☐" ? "☑" : "☐") +
@@ -149,31 +213,37 @@ export function Scratchpad() {
         markerPosition + 1,
       )
     })
-
-    return true
   }
 
   function handleNoteClick(event: ReactMouseEvent<HTMLTextAreaElement>) {
-    toggleTodoAtCursor(event.currentTarget)
+    const markerPosition = getTodoMarkerPositionFromPoint(
+      event.currentTarget,
+      note,
+      event.clientX,
+      event.clientY,
+    )
+
+    if (markerPosition === null) {
+      return
+    }
+
+    event.preventDefault()
+    toggleTodoAtPosition(markerPosition)
+  }
+
+  function handleNoteMouseMove(event: ReactMouseEvent<HTMLTextAreaElement>) {
+    setIsHoveringTodoMarker(
+      getTodoMarkerPositionFromPoint(
+        event.currentTarget,
+        note,
+        event.clientX,
+        event.clientY,
+      ) !== null,
+    )
   }
 
   return (
     <>
-      <Button
-        aria-expanded={isOpen}
-        aria-label="Open scratchpad"
-        className={cn(
-          "absolute right-[34px] bottom-[124px] z-50 size-[48px] cursor-pointer rounded-full border border-white/10 bg-[#242526]/95 text-[#d7d7d8] shadow-[0_14px_36px_rgb(0_0_0/0.38),inset_0_1px_0_rgb(255_255_255/0.08)] backdrop-blur transition-all hover:bg-[#2d2e30] hover:text-white",
-          isOpen && "pointer-events-none translate-y-1 scale-95 opacity-0",
-        )}
-        onClick={() => setIsOpen(true)}
-        size="icon"
-        type="button"
-        variant="ghost"
-      >
-        <NotebookPen className="size-[23px] stroke-[1.8]" />
-      </Button>
-
       <section
         aria-label={chatMock.scratchpad.title}
         className={cn(
@@ -196,10 +266,15 @@ export function Scratchpad() {
 
         <Textarea
           aria-label="Scratchpad notes"
-          className="min-h-0 flex-1 resize-none rounded-none border-0 bg-transparent px-6 py-5 pr-16 text-[15px] leading-6 text-[#eeeeef] shadow-none placeholder:text-[#737477] focus-visible:border-0 focus-visible:ring-0 md:text-[15px] dark:bg-transparent"
+          className={cn(
+            "min-h-0 flex-1 resize-none rounded-none border-0 bg-transparent px-6 py-5 pr-16 text-[15px] leading-6 text-[#eeeeef] shadow-none placeholder:text-[#737477] focus-visible:border-0 focus-visible:ring-0 md:text-[15px] dark:bg-transparent",
+            isHoveringTodoMarker ? "cursor-pointer" : "cursor-text",
+          )}
           onClick={handleNoteClick}
           onChange={handleNoteChange}
           onKeyDown={handleNoteKeyDown}
+          onMouseLeave={() => setIsHoveringTodoMarker(false)}
+          onMouseMove={handleNoteMouseMove}
           placeholder={chatMock.scratchpad.placeholder}
           ref={textareaRef}
           value={note}

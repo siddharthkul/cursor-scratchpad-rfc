@@ -1,10 +1,28 @@
-import { ChevronDown, Cpu, Mic, Monitor, Plus } from "lucide-react"
+import {
+  ChevronDown,
+  Cpu,
+  Mic,
+  Monitor,
+  NotebookPen,
+  Plus,
+} from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { chatMock } from "@/lib/mock-data"
+import { cn } from "@/lib/utils"
 
-export function ChatComposer() {
+type ChatComposerProps = {
+  isScratchpadOpen: boolean
+  onOpenScratchpad: () => void
+}
+
+export function ChatComposer({
+  isScratchpadOpen,
+  onOpenScratchpad,
+}: ChatComposerProps) {
+  const contextUsed = chatMock.contextUsedPercent
+
   return (
     <div className="absolute inset-x-[26px] bottom-[18px]">
       <Button
@@ -56,7 +74,32 @@ export function ChatComposer() {
           <span>{chatMock.location}</span>
           <span>{chatMock.branch}</span>
         </div>
-        <div className="size-[22px] rounded-full border-4 border-white/12 border-t-[#777879]" />
+        <div className="flex items-center gap-3">
+          <Button
+            aria-label="Open scratchpad from status row"
+            aria-pressed={isScratchpadOpen}
+            className={cn(
+              "size-[24px] cursor-pointer border-0 bg-transparent p-0 text-[#8f9092] shadow-none hover:bg-transparent hover:text-[#cfcfd1]",
+              isScratchpadOpen && "text-[#d6d7d8]",
+            )}
+            onClick={onOpenScratchpad}
+            size="icon"
+            type="button"
+            variant="ghost"
+          >
+            <NotebookPen className="size-[18px] stroke-[1.85]" />
+          </Button>
+          <div
+            aria-label={`${contextUsed}% context used`}
+            className="grid size-[22px] place-items-center rounded-full"
+            title={`${contextUsed}% context used`}
+            style={{
+              background: `conic-gradient(#777879 ${contextUsed * 3.6}deg, rgb(255 255 255 / 0.12) 0deg)`,
+            }}
+          >
+            <span className="size-[15px] rounded-full bg-[#101112]" />
+          </div>
+        </div>
       </div>
     </div>
   )
