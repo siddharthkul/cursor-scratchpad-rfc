@@ -1,15 +1,16 @@
 import {
   Columns2,
   Ellipsis,
+  Laptop,
   PanelLeft,
   Plus,
   Search,
   Share,
-  Square,
 } from "lucide-react"
 import type { ReactNode } from "react"
 
 import { ChatComposer } from "@/components/chat-composer"
+import { Scratchpad } from "@/components/scratchpad"
 import { chatMock } from "@/lib/mock-data"
 
 const trafficLights = [
@@ -73,7 +74,7 @@ export function ChatWindow() {
             <h1 className="truncate text-[20px] font-semibold tracking-[-0.02em]">
               {chatMock.title}
             </h1>
-            <Square className="size-[18px] rotate-180 text-[#a6a7a8]" />
+            <Laptop className="size-[20px] text-[#a6a7a8]" />
           </div>
         </div>
 
@@ -100,6 +101,7 @@ export function ChatWindow() {
         </p>
       </div>
 
+      <Scratchpad />
       <ChatComposer />
     </section>
   )

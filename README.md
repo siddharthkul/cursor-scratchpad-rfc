@@ -2,7 +2,7 @@
 
 A live mock RFC for proposing per-chat scratchpads in Cursor.
 
-This first pass only recreates the current Cursor chat look with mock data. The scratchpad UX is intentionally not implemented yet, so the baseline can be shared and reviewed before layering in notes that are private to the user and not sent to the AI.
+This mock recreates the current Cursor chat look with mock data and adds a floating per-chat scratchpad prototype. Scratchpad notes are presented as private/local UI and are not sent to the AI.
 
 ## Run Locally
 
