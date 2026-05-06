@@ -94,8 +94,7 @@ type ScratchpadProps = {
 export function Scratchpad({ isOpen, setIsOpen }: ScratchpadProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [isHoveringTodoMarker, setIsHoveringTodoMarker] = useState(false)
-  const [note, setNote] = useState(`Feature idea
-Each Cursor chat gets a private scratchpad for notes, todos, links, and follow-ups.
+  const [note, setNote] = useState(`Each Cursor chat gets a private scratchpad for notes, todos, links, and follow-ups.
 
 Design decisions
 - Keep notes visually separate from chat messages and the prompt composer.
