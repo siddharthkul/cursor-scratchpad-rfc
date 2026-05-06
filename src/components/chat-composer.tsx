@@ -91,7 +91,11 @@ export function ChatComposer({
           </Button>
           <div
             aria-label={`${contextUsed}% context used`}
+            aria-valuemax={100}
+            aria-valuemin={0}
+            aria-valuenow={contextUsed}
             className="grid size-[22px] place-items-center rounded-full"
+            role="meter"
             title={`${contextUsed}% context used`}
             style={{
               background: `conic-gradient(#777879 ${contextUsed * 3.6}deg, rgb(255 255 255 / 0.12) 0deg)`,
