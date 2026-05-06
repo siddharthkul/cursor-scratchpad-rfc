@@ -94,9 +94,25 @@ type ScratchpadProps = {
 export function Scratchpad({ isOpen, setIsOpen }: ScratchpadProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [isHoveringTodoMarker, setIsHoveringTodoMarker] = useState(false)
-  const [note, setNote] = useState(
-    "Mention that notes stay attached to this chat and never become prompt context.",
-  )
+  const [note, setNote] = useState(`Feature idea
+Each Cursor chat gets a private scratchpad for notes, todos, links, and follow-ups.
+
+Design decisions
+- Keep notes visually separate from chat messages and the prompt composer.
+- Place the entry point in the bottom status/tooling row next to context usage.
+- Open as a bottom tray so it feels attached to the current chat.
+- Notes are private to this chat and are not sent to the AI.
+
+Interaction spec
+- Click the scratchpad icon to open the tray.
+- Press Escape to close.
+- Type [ ] or [] to create a todo.
+- Type [x] to create a checked todo.
+- Click a todo marker to toggle it.
+
+☐ Decide if scratchpads should persist locally or sync across machines.
+☐ Explore whether notes should be searchable across chats.
+☑ Keep the first prototype intentionally lightweight.`)
 
   useEffect(() => {
     if (!isOpen) {

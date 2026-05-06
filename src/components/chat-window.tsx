@@ -44,7 +44,7 @@ export function ChatWindow() {
   return (
     <section
       aria-label="Cursor chat mock"
-      className="relative h-[min(80vh,806px)] w-[min(89vw,914px)] overflow-hidden rounded-[26px] border border-black/70 bg-[linear-gradient(180deg,#11191a_0%,#101515_30%,#141011_100%)] shadow-[0_35px_90px_rgb(0_0_0/0.62),0_8px_18px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.08)] ring-1 ring-white/10"
+      className="relative h-[min(80vh,806px)] min-h-[650px] w-[min(89vw,914px)] min-w-[480px] overflow-hidden rounded-[26px] border border-black/70 bg-[linear-gradient(180deg,#11191a_0%,#101515_30%,#141011_100%)] shadow-[0_35px_90px_rgb(0_0_0/0.62),0_8px_18px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.08)] ring-1 ring-white/10"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_20%,rgb(25_48_48/0.2),transparent_26%),radial-gradient(circle_at_77%_69%,rgb(54_31_35/0.23),transparent_33%)]" />
 
