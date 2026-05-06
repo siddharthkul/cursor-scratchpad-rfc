@@ -42,6 +42,14 @@ The scratchpad intentionally lives in the status/tooling area rather than beside
 
 The tray covers the lower chat area while open, which makes it feel attached to the current chat without competing with chat messages. The interaction is deliberately small: no side panel, no modal header, no AI affordance, and no persistence/API plumbing in this mock.
 
+Motion spec:
+
+- Tray animates with `transform` only.
+- Duration: `450ms`.
+- Easing: `cubic-bezier(0.22, 1, 0.36, 1)`.
+- Closed state: fully translated below the chat window.
+- Open state: slides up from the bottom with no opacity fade or bounce.
+
 ## Demo Script
 
 For a short video:

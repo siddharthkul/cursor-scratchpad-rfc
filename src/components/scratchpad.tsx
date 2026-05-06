@@ -109,6 +109,12 @@ Interaction spec
 - Type [x] to create a checked todo.
 - Click a todo marker to toggle it.
 
+Motion spec
+- Tray uses transform-only motion.
+- Duration: 450ms.
+- Easing: cubic-bezier(0.22, 1, 0.36, 1).
+- Slides up from below the chat window with no opacity fade or bounce.
+
 ☐ Decide if scratchpads should persist locally or sync across machines.
 ☐ Explore whether notes should be searchable across chats.
 ☑ Keep the first prototype intentionally lightweight.`)
