@@ -247,10 +247,10 @@ export function Scratchpad({ isOpen, setIsOpen }: ScratchpadProps) {
       <section
         aria-label={chatMock.scratchpad.title}
         className={cn(
-          "absolute inset-x-[26px] bottom-0 top-[340px] z-40 flex flex-col overflow-hidden rounded-t-[26px] border-t border-white/8 bg-[#18191b]/97 text-[#f0f0f0] shadow-[0_-18px_46px_rgb(0_0_0/0.28),inset_0_1px_0_rgb(255_255_255/0.06)] backdrop-blur-xl transition-all duration-300 ease-out",
+          "absolute inset-x-[26px] bottom-0 top-[340px] z-40 flex flex-col overflow-hidden rounded-t-[26px] border-t border-white/8 bg-[#18191b]/97 text-[#f0f0f0] shadow-[0_-18px_46px_rgb(0_0_0/0.28),inset_0_1px_0_rgb(255_255_255/0.06)] backdrop-blur-xl transition-transform duration-450 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform",
           isOpen
-            ? "translate-y-0 opacity-100"
-            : "pointer-events-none translate-y-full opacity-0",
+            ? "translate-y-0"
+            : "pointer-events-none translate-y-full",
         )}
       >
         <Button
